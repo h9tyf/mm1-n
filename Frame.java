@@ -8,10 +8,10 @@ import java.util.ArrayList;
 
 public class Frame {
     Output output;
-    private final JFrame jFrame = new JFrame("M/M/1模拟");
+    private final JFrame jFrame = new JFrame("M/M/n模拟");
     private final Container container = jFrame.getContentPane();
     private int height = 50;
-    private int line_dis = 10;
+    private int line_dis = 5;
     private int textwidth = 300;
     private Font myFont = new Font("黑体", Font.PLAIN, 22);
 
@@ -42,6 +42,8 @@ public class Frame {
     JTextField avgActServTimeText = new JTextField();
     JLabel servUseRate = new JLabel("服务器利用率");
     JTextField servUseRateText = new JTextField();
+    JLabel sumTime = new JLabel("总时间");
+    JTextField sumTimeText = new JTextField();
 
     /*
         System.out.println("相关计算参数输出：");
@@ -200,6 +202,14 @@ public class Frame {
         servUseRateText.setFont(myFont);
         panel.add(servUseRateText);
 
+        y = y + line_dis + height;
+        sumTime.setBounds(x,y,250,height);
+        sumTime.setFont(myFont);
+        panel.add(sumTime);
+        sumTimeText.setBounds(x + 300,y,textwidth,height);
+        sumTimeText.setFont(myFont);
+        panel.add(sumTimeText);
+
         addListener();
 
     }
@@ -215,7 +225,12 @@ public class Frame {
                 int param5 = Integer.parseInt(endTimeText.getText());
                 Controller controller = new Controller(param1, param2, param3, param4, param5);
 
-                ArrayList<Double>res = controller.run();
+                ArrayList<Double>res = null;
+                try {
+                    res = controller.run();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
                 ArrayList<Double>myOutput = new ArrayList<>();
                 myOutput.add(param1);
@@ -229,6 +244,7 @@ public class Frame {
                 avgStayTimeText.setText(String.valueOf(res.get(4)));
                 avgActServTimeText.setText(String.valueOf(res.get(5)));
                 servUseRateText.setText(String.valueOf(res.get(6)));
+                sumTimeText.setText(String.valueOf(res.get(7)));
 
                 myOutput.addAll(res);
                 try {
